@@ -28,16 +28,40 @@ application.
 ## Instructions
 
 You will be doing your coding in `main.js`. If you take a look at the file, you
-will see that a function, `mimicServerCall()`, is being provided for you. This
-function will "mock" the behavior of a backend server. You will invoke
-`mimicServerCall()` in response to a user action, and the function will randomly
-return either a "success" or "fail" response. Your code will then need to handle
-the response appropriately: updating the appearance of the heart if it returns a
-"successful" response, and displaying an error in the DOM otherwise.
+will see that a function, `mimicServerCall()`, is being provided for you:
+
+```js
+function mimicServerCall(url="http://mimicServer.example.com", config={}) {
+  return new Promise(function(resolve, reject) {
+    setTimeout(function() {
+      let isRandomFailure = Math.random() < .2
+      if (isRandomFailure) {
+        reject("Random server error. Try again.");
+      } else {
+        resolve("Pretend remote server notified of action!");
+      }
+    }, 300);
+  });
+}
+```
+
+What this function is doing is simply returning either a "success" or "fail"
+response at random. Because we don't have a backend server set up, we are
+using this function to "mock" the fact that a server request will return
+either a successful or unsuccessful HTTP response.
+
+For this lab, you will need to write code to invoke `mimicServerCall()` in
+response to a user action. You will then need to handle the response just as
+if it came from a live server: updating the appearance of the heart if it
+returns a "successful" response, and displaying an error in the DOM otherwise.
 
 Note that the content of the "successful" response from the server is not
 important here — we only care that it's successful. This means you will not need
 to call `.json()` on the response so you only need a single `then()` call.
+
+> Note: The tests will only check for the first part of the specification
+> (adding the `hidden` class). You should verify the rest of the behavior
+> yourself, by checking the page in the browser.
 
 Here's the specification:
 
@@ -61,10 +85,6 @@ Here's the specification:
   `.style` properties.
 * Only manipulate the DOM once the server request responds. Do not make the
   heart full until you're inside a successful `.then` block.
-
-> Note: The tests will only check for the first part of the specification
-> (adding the `hidden` class). You should verify the rest of the behavior
-> yourself, by checking the page in the browser.
 
 ## Conclusion
 
